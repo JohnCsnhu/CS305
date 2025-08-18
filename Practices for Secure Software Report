@@ -1,0 +1,41 @@
+Practices for Secure Software Report
+
+ 
+Table of Contents
+DOCUMENT REVISION HISTORY	3
+CLIENT	3
+INSTRUCTIONS	ERROR! BOOKMARK NOT DEFINED.
+DEVELOPER	4
+1. ALGORITHM CIPHER	4
+2. CERTIFICATE GENERATION	4
+3. DEPLOY CIPHER	6
+4. SECURE COMMUNICATIONS	6
+5. SECONDARY TESTING	7
+6. FUNCTIONAL TESTING	7
+7. SUMMARY	8
+8. INDUSTRY STANDARD BEST PRACTICES	8
+
+ 
+Document Revision History
+
+Version	Date	Author	Comments
+1.0	8/11/2025	John Chomen	
+
+Client
+
+Developer
+John C.
+
+Algorithm Cipher
+
+Recommendation: SHA‑256 (SHA‑2 family) as the checksum algorithm for file/data verification.
+
+Overview: SHA‑256 is a one‑way cryptographic hash function that maps arbitrary‑length input to a fixed 256‑bit output. It is designed for collision resistance and preimage resistance—critical for detecting tampering during file transfer.
+
+Hash & bit level: 256‑bit digest (64 hex chars). Higher bit length increases brute‑force work factor compared to MD5/SHA‑1.
+
+Randomness & keys: Pure hashes (like SHA‑256) do not use random numbers or keys. For authenticated integrity over an untrusted channel, use HMAC‑SHA‑256 with a shared secret. For transport security and server authentication, rely on TLS (X.509 certificates) rather than embedding keys in the application.
+
+Symmetric vs asymmetric: TLS uses asymmetric crypto (X.509/PKI) to establish identity and session keys; payload integrity within the tunnel uses symmetric MACs. Within the application, SHA‑256 provides deterministic checksums for stored/transferred artifacts. If you need tamper‑evident application‑level integrity, prefer HMAC‑SHA‑256.
+
+History & current state: Older hashes MD5 and SHA‑1 are broken for collision resistance and must not be used. SHA‑2 (SHA‑256/384/512) remains widely recommended, and SHA‑3 exists as an alternative. SHA‑256 balances security, interoperability, and performance and is supported natively by Java (MessageDigest).
